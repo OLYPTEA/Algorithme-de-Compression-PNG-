@@ -1,0 +1,30 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from core.chunk import write_chunks, read_chunks
+
+
+if __name__ == "__main__":
+    chunks = [
+        ("IHDR", bytes(range(13))),
+        ("IDAT", b"donnees compressees factices"),
+        ("IEND", b""),
+    ]
+    write_chunks("test_output.png", chunks)
+
+    chunks_relus = read_chunks("test_output.png")
+    assert chunks_relus == chunks, f"KO round-trip : {chunks_relus} != {chunks}"
+    print("OK : round-trip chunks validé")
+
+    # Test détection de corruption
+    with open("test_output.png", "rb") as f:
+        raw = bytearray(f.read())
+    raw[30] ^= 0xFF  # corrompt un octet quelque part dans les données
+    with open("test_output_corrupted.png", "wb") as f:
+        f.write(raw)
+
+    try:
+        read_chunks("test_output_corrupted.png")
+        print("ERREUR : la corruption n'a pas été détectée !")
+    except ValueError as e:
+        print("OK : corruption détectée ->", e)
