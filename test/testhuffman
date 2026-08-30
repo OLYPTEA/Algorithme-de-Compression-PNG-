@@ -1,0 +1,20 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from compression.Huffman import huffman, extract_code, huffman_encode, huffman_decode, Noeud
+
+if __name__ == "__main__":
+    frequences = {"A": 5, "B": 2, "C": 1, "D": 1}
+    racine = huffman(frequences)
+    codes = extract_code(racine)
+    print("Codes :", codes)
+
+    flux = ["A", "B", "A", "C", "A", "D", "A", "B"]
+    encoded = huffman_encode(flux, codes)
+    print("Encodé :", encoded)
+
+    decoded = huffman_decode(encoded, racine)
+    print("Décodé :", decoded)
+
+    assert decoded == flux, f"KO round-trip : {decoded} != {flux}"
+    print("OK : round-trip Huffman validé")
