@@ -1,16 +1,3 @@
-"""
-Interface graphique pour le pipeline de compression PNG maison.
-
-Lance ce fichier directement :
-    python interface.py
-
-Nécessite le fichier pipeline_complet.py dans le même dossier.
-Pour les fichiers RAW (RW2, CR2, NEF, ARW...), installe rawpy :
-    pip install rawpy numpy
-Pour les formats classiques (JPG, PNG, BMP...), installe Pillow :
-    pip install Pillow
-"""
-
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import threading
